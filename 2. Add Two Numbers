@@ -1,0 +1,75 @@
+You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+Output: 7 -> 0 -> 8
+
+
+/************************************************************************/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        vector<int> temp;
+        ListNode *p = l1;
+        ListNode *q = l2;
+        int count;
+        for(count = 0;; count++)
+        {
+            if((p != NULL)&&(q != NULL))
+            {
+                temp.push_back(p->val + q->val); 
+                p = p->next;
+                q = q->next;
+            }
+            else if(p != NULL)
+            {
+                temp.push_back(p->val);
+                p = p->next;
+            }
+            else if(q != NULL)
+            {
+                temp.push_back(q->val);
+                q = q->next;
+            }
+            else
+            {
+                break;
+            }
+        }
+        int tag = 0;
+        ListNode *head = (ListNode *)malloc(sizeof(ListNode));
+        p = head;
+        for(int i = 0; i < temp.size(); i++)
+        {
+            temp[i] += tag;
+            tag = 0;
+            if(temp[i] >= 10)
+            {
+                tag = 1;
+                temp[i] %= 10;
+            }
+            ListNode *q = (ListNode *)malloc(sizeof(ListNode));
+            q->val = temp[i];
+            q->next = NULL;
+            p->next = q;
+            p = p->next;
+        }
+        if(tag)
+        {
+            ListNode *q = (ListNode *)malloc(sizeof(ListNode));
+            q->val = tag;
+            q->next = NULL;
+            p->next = q;
+        }
+        return head->next;
+    }
+};
