@@ -1,0 +1,92 @@
+Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+
+Example:
+
+Input: "babad"
+
+Output: "bab"
+
+Note: "aba" is also a valid answer.
+Example:
+
+Input: "cbbd"
+
+Output: "bb"
+
+
+/**********************************************/时间复杂度为n3
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string result;
+        int length = s.size();
+        int max_length = 0;
+        for(int i = 0; i < length; i++)
+        {
+            for(int j = i; j < length; j++)
+            {
+                int t_i = i;
+                int t_j = j;
+                while(s[t_i] == s[t_j])
+                {
+                    if(t_j <= t_i)
+                    {
+                        if(max_length < (j - i + 1))
+                        {
+                            max_length =  j - i + 1;
+                            result = s.substr(i, max_length);
+                        }
+                        break;
+                    }
+                    t_i++;
+                    t_j--;
+                }
+            }
+        }
+        return result;
+    }
+};
+
+
+/**********************************************/时间复杂度为n2
+/*
+首先我们把字符串S改造一下变成T，改造方法是：在S的每个字符之间和S首尾都插入一个"#"
+例如，S="abaaba"，那么T="#a#b#a#a#b#a#"
+在插入"#"后，长度为奇数和偶数的回文都可以优雅地处理了*/
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int length = s.size();
+        string str = "#";
+        int max_length = 0;
+        string result;
+        for(int i = 0; i < length; i++)
+        {
+            str += s[i];
+            str += "#";
+        }
+        for(int i = 0; i < (2 * length + 1); i++)
+        {
+            int k = 0;
+            while(( (i - k - 1) >= 0)&&( (i + k + 1) < (2 * length + 1))&&(str[i + k + 1] == str[i - k - 1]))
+            {
+                k++;
+            }
+            if(max_length < (2 * k + 1))
+            {
+                max_length = (2 * k + 1);
+                result = str.substr(i - k, max_length);
+            }
+        }
+        for (string::iterator it =result.begin(); it != result.end();)
+        {
+            if ( *it == '#')
+            {
+                it = result.erase(it);
+            }
+            else
+            it++;
+        }
+        return result;
+    }
+};
