@@ -1,0 +1,52 @@
+6. ZigZag Conversion
+The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+
+P   A   H   N
+A P L S I I G
+Y   I   R
+And then read line by line: "PAHNAPLSIIGYIR"
+Write the code that will take a string and make this conversion given a number of rows:
+
+string convert(string text, int nRows);
+convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
+Subscribe to see which companies asked this question.
+
+/*****************************************************************/
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        string result;
+        if( numRows == 1)
+        {
+            return s;
+        }
+        int size = s.size();
+        int count = 2 * numRows - 2;
+        for(int row = 0; row < numRows; row++)
+        {
+            result += s[row];
+            int k = count - 2 * row;
+            int id = row + k;
+            while( id < size)
+            {
+                if( k == 0 )
+                {
+                    k = count;
+                    id += k;
+                }
+                else if(k == count)
+                {
+                    result += s[id];
+                    id += k;
+                }
+                else
+                {
+                    result += s[id];
+                    k = count - k;
+                    id += k;
+                }
+            }
+        }
+        return result;
+    }
+};
