@@ -1,0 +1,75 @@
+Implement atoi to convert a string to an integer.
+
+Hint: Carefully consider all possible input cases. If you want a challenge, please do not see below and ask yourself what are the possible input cases.
+
+Notes: It is intended for this problem to be specified vaguely (ie, no given input specs). You are responsible to gather all the input requirements up front.
+
+Update (2015-02-10):
+The signature of the C++ function had been updated. If you still see your function signature accepts a const char * argument, please click the reload button  to reset your code definition.
+
+/********************************************/
+ 此问题包含多个判断条件：
+ 1.如果string表示的数字不符合数字规则 如"-+1"、"- 1"、"-1 "等，则直接返回不符合规则前所统计的数字；
+ 2.如果string表示的数字超过带符号的32位int型所能表示的范围，则直接返回所能表达的最大数字 (0x7fffffff、0x80000000)；
+ 3.如果string表示的数字先出现空格，则忽略不计，如" 1"、" -1"等；
+ class Solution {
+public:
+    int myAtoi(string str) {
+        const int max = 0x7fffffff;
+        const int min = 0x80000000;
+        int i = 0;
+        long res = 0;
+        int positive = 1;
+        bool hadFlag = false;
+        bool tag = false;
+        while(str[i])
+        {
+            if(str[i] == '-')
+            {
+                if(hadFlag)
+                break;
+                hadFlag = true;
+                positive = -1;
+                tag = true;
+            }
+            else if(str[i] == '+')
+            {
+                if(hadFlag)
+                break;
+                hadFlag = true;
+                tag = true;
+                
+            }
+            else if((str[i] >= '0')&&(str[i] <= '9'))
+            {
+                res = res * 10 + str[i] - '0';
+                if(positive * res > max)
+                {
+                    res = max;
+                    break;
+                }
+                else if(positive * res < min)
+                {
+                    res = min;
+                    break;
+                }
+                tag = true;
+                
+            }
+            else if(str[i] == ' ')
+            {
+                if(tag)
+                {
+                    if(res >= 0)
+                    break;
+                }
+            }
+            else 
+            {
+                break;
+            }
+            i++;
+        }
+        return positive * res;
+        }
+};
