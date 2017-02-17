@@ -1,0 +1,59 @@
+Given a roman numeral, convert it to an integer.
+
+Input is guaranteed to be within the range from 1 to 3999.
+
+Subscribe to see which companies asked this question.
+
+Show Tags
+Show Similar Problems
+
+
+/*************************/
+class Solution {
+public:
+    int romanToInt(string s) {
+        if(s == "")
+        {
+            return 0;
+        }
+        int k = 3;
+        while(k >= 0)
+        {
+            
+            int q = s.size() > 3 ? 3 : s.size();
+            while(q > 0)
+            {
+                int temp = Match(s.substr(0 ,q), k);
+                 if(temp > 0)
+                {
+                    return temp * pow(10, k) + romanToInt(s.substr(q));
+                }
+                q--;
+            }
+            k--;
+        }
+        return 0;
+    }
+    
+    
+    int Match(string s, int k)
+    {
+        string str[4][10]={
+            {"","I","II","III","IV","V","VI","VII","VIII","IX"},
+            {"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"},
+            {"","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"},
+            {"","M","MM","MMM"}
+        };
+        int i = 0;
+        int size = (k == 3) ? 4 : 10;
+        while((i < size)&&(str[k][i] != s))
+        {
+            i++;
+        }
+        if(i < size)
+        {
+            return i;
+        }
+        return 0;
+    }
+};
