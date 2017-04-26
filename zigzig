@@ -1,0 +1,141 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <algorithm>
+#include <string>
+#include <set>
+#include <queue>
+#include <windows.h>
+#include <iomanip>
+#include <map>
+using namespace std;
+
+//画zigzig图
+
+void Print(int **A, int n){
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD c = { 0, 0 };
+	SetConsoleCursorPosition(hOut, c);
+	Sleep(0.05);
+	//system("CLS");
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < n;j++)
+		{
+			if (!i && !j)
+			{
+				cout << "* ";
+			}
+			else if (A[i][j])
+			{
+				cout << "* ";
+			}
+			//cout << A[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+
+int main(){
+int i = 0, j = 0, l = 0, K = 0, n = 30;
+	int **A = new int *[n + 1];
+	for (int i = 0; i < n + 1;i++)
+	{
+		A[i] = new int[n + 1];
+		for (int j = 0; j < n + 1;j++)	A[i][j] = 0;
+	}
+	bool right = true, down = false, tag = false;
+	while (i < n&&j < n && K < n * n){
+		Print(A, n);
+		if (right && !tag)
+		{
+			A[i][++j] = ++K;
+			Print(A, n);
+			for (int t = 0; t <= l;t++)
+			{
+				A[++i][--j] = ++K; Print(A, n);
+			}
+			if (!tag&&l == n - 2)
+			{
+				tag = true;
+			}
+			if (!tag)
+			{
+				l++;
+			}
+			else
+			{
+				l--;
+			}
+			//A[--i][--j] = ++K; Print(A, 20);
+			right = false;
+		}
+		else if (!right && !tag)
+		{
+			A[++i][j] = ++K; Print(A, n);
+			for (int t = 0; t <= l; t++)
+			{
+				A[--i][++j] = ++K; Print(A, n);
+			}
+			if (!tag&&l == n - 2)
+			{
+				tag = true;
+			}
+			if (!tag)
+			{
+				l++;
+			}
+			else
+			{
+				l--;
+			}
+			//A[++i][++j] = ++K; Print(A, 20);
+			right = true;
+		}
+		else if (right && tag)
+		{
+			A[++i][j] = ++K;
+			Print(A, n);
+			for (int t = 0; t <= l; t++)
+			{
+				A[++i][--j] = ++K; Print(A, n);
+			}
+			if (!tag&&l == n - 2)
+			{
+				tag = true;
+			}
+			if (!tag)
+			{
+				l++;
+			}
+			else
+			{
+				l--;
+			}
+			//A[--i][--j] = ++K; Print(A, 20);
+			right = false;
+		}
+		else if (!right && tag)
+		{
+			A[i][++j] = ++K; Print(A, n);
+			for (int t = 0; t <= l; t++)
+			{
+				A[--i][++j] = ++K; Print(A, n);
+			}
+			if (!tag&&l == n - 2)
+			{
+				tag = true;
+			}
+			if (!tag)
+			{
+				l++;
+			}
+			else
+			{
+				l--;
+			}
+			//A[++i][++j] = ++K; Print(A, 20);
+			right = true;
+		}
+		
+	}
+}
